@@ -1,0 +1,470 @@
+:root {
+  --scene-width: 100vw;
+  --scene-height: 100vh;
+
+  /* BRAND */
+  --brand-top: 5%;
+  --brand-logo-width: 85px;
+  --brand-font-size: clamp(22px, 2vw, 34px);
+  --brand-letter-spacing: 16px;
+  --brand-color: #B2935B;
+
+
+  /* GUEST CHECK */
+  --guest-check-left: 19%;
+  --guest-check-top: 30%;
+  --guest-check-width: 15%;
+  --guest-check-rotate: -10deg;
+
+
+  /* MENU */
+  --menu-left: 36%;
+  --menu-top: 25%;
+  --menu-width: 25%;
+  --menu-rotate: 0deg;
+
+
+  /* CALLING CARD */
+  --calling-card-left: 59%;
+  --calling-card-top: 32%;
+  --calling-card-width: 11%;
+  --calling-card-rotate: -3deg;
+
+
+  /* POSTCARD */
+  --postcard-left: 62%;
+  --postcard-top: 46%;
+  --postcard-width: 15%;
+  --postcard-rotate: 7deg;
+
+
+  /* NEWSPAPER */
+  --newspaper-left: 19%;
+  --newspaper-top: 66%;
+  --newspaper-width: 20%;
+  --newspaper-rotate: -15deg;
+
+
+  /* COFFEE */
+  --coffee-left: 30%;
+  --coffee-top: 51%;
+  --coffee-width: 10%;
+  --coffee-rotate: 0deg;
+
+
+  /* SUGAR PACKETS */
+  --sugar-one-left: 32%;
+  --sugar-one-top: 45%;
+  --sugar-one-width: 3.8%;
+  --sugar-one-rotate: -12deg;
+
+  --sugar-two-left: 33%;
+  --sugar-two-top: 47%;
+  --sugar-two-width: 3.8%;
+  --sugar-two-rotate: 8deg;
+
+
+  /* FLOWERS */
+  --flower-left: 52%;
+  --flower-top: 68%;
+  --flower-width: 19%;
+  --flower-rotate: -15deg;
+
+
+  /* NAPKIN */
+  --napkin-left: 57%;
+  --napkin-top: 80%;
+  --napkin-width: 9%;
+  --napkin-rotate: 14deg;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: "Cormorant Garamond", serif;
+  background: #f5f5f0;
+}
+
+.kaffe-scene {
+  position: relative;
+  width: var(--scene-width);
+  height: var(--scene-height);
+  overflow: hidden;
+  user-select: none;
+}
+
+.table-cloth {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.brand {
+  position: absolute;
+  top: var(--brand-top);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.brand-mark {
+  width: var(--brand-logo-width);
+  display: block;
+  margin: 0 auto 10px;
+  opacity: 0.9;
+}
+
+.brand h1 {
+  margin: 0;
+  color: var(--brand-color);
+  font-size: var(--brand-font-size);
+  font-weight: 400;
+  letter-spacing: var(--brand-letter-spacing);
+  white-space: nowrap;
+}
+
+.asset {
+  position: absolute;
+  height: auto;
+  cursor: grab;
+  z-index: 10;
+  filter: drop-shadow(0 12px 18px rgba(70, 55, 35, 0.15));
+  touch-action: none;
+}
+
+.asset:active {
+  cursor: grabbing;
+  z-index: 50;
+}
+
+.guest-check {
+  left: var(--guest-check-left);
+  top: var(--guest-check-top);
+  width: var(--guest-check-width);
+  transform: rotate(var(--guest-check-rotate));
+}
+
+.menu {
+  left: var(--menu-left);
+  top: var(--menu-top);
+  width: var(--menu-width);
+  transform: rotate(var(--menu-rotate));
+}
+
+.calling-card {
+  left: var(--calling-card-left);
+  top: var(--calling-card-top);
+  width: var(--calling-card-width);
+  transform: rotate(var(--calling-card-rotate));
+}
+
+.postcard {
+  left: var(--postcard-left);
+  top: var(--postcard-top);
+  width: var(--postcard-width);
+  transform: rotate(var(--postcard-rotate));
+}
+
+.newspaper {
+  left: var(--newspaper-left);
+  top: var(--newspaper-top);
+  width: var(--newspaper-width);
+  transform: rotate(var(--newspaper-rotate));
+}
+
+.coffee {
+  left: var(--coffee-left);
+  top: var(--coffee-top);
+  width: var(--coffee-width);
+  transform: rotate(var(--coffee-rotate));
+  z-index: 20;
+}
+
+.sugar-one {
+  left: var(--sugar-one-left);
+  top: var(--sugar-one-top);
+  width: var(--sugar-one-width);
+  transform: rotate(var(--sugar-one-rotate));
+  z-index: 18;
+}
+
+.sugar-two {
+  left: var(--sugar-two-left);
+  top: var(--sugar-two-top);
+  width: var(--sugar-two-width);
+  transform: rotate(var(--sugar-two-rotate));
+  z-index: 17;
+}
+
+.flower {
+  left: var(--flower-left);
+  top: var(--flower-top);
+  width: var(--flower-width);
+  transform: rotate(var(--flower-rotate));
+  z-index: 16;
+}
+
+.napkin {
+  left: var(--napkin-left);
+  top: var(--napkin-top);
+  width: var(--napkin-width);
+  transform: rotate(var(--napkin-rotate));
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --brand-top: 6%;
+    --brand-logo-width: 80px;
+    --brand-letter-spacing: 8px;
+
+    --guest-check-left: 7%;
+    --guest-check-top: 32%;
+    --guest-check-width: 30%;
+
+    --menu-left: 32%;
+    --menu-top: 29%;
+    --menu-width: 42%;
+
+    --calling-card-left: 66%;
+    --calling-card-top: 30%;
+    --calling-card-width: 22%;
+
+    --postcard-left: 55%;
+    --postcard-top: 50%;
+    --postcard-width: 34%;
+
+    --newspaper-left: 7%;
+    --newspaper-top: 67%;
+    --newspaper-width: 42%;
+
+    --coffee-left: 26%;
+    --coffee-top: 52%;
+    --coffee-width: 17%;
+
+    --sugar-one-left: 37%;
+    --sugar-one-top: 50%;
+    --sugar-one-width: 9%;
+
+    --sugar-two-left: 38%;
+    --sugar-two-top: 54%;
+    --sugar-two-width: 9%;
+
+    --flower-left: 48%;
+    --flower-top: 68%;
+    --flower-width: 32%;
+
+    --napkin-left: 63%;
+    --napkin-top: 78%;
+    --napkin-width: 18%;
+  }
+}
+
+
+/* ======================
+MODALS
+====================== */
+
+
+.modal-overlay{
+position:fixed;
+inset:0;
+background:rgba(30,30,30,.45);
+backdrop-filter: blur(4px);
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+opacity:0;
+pointer-events:none;
+
+transition:.4s ease;
+
+z-index:99999;
+}
+
+
+
+.modal-overlay.active{
+opacity:1;
+pointer-events:auto;
+}
+
+
+
+.modal{
+position:relative;
+
+width:min(620px,90vw);
+max-height:80vh;
+
+overflow-y:auto;
+
+
+background:
+linear-gradient(
+rgba(255,252,245,.92),
+rgba(255,252,245,.92)
+);
+
+
+padding:60px 75px;
+
+font-family:"Cormorant Garamond",serif;
+
+color:#6d6049;
+
+
+box-shadow:
+0 30px 70px rgba(0,0,0,.18);
+
+
+transform:scale(.92);
+transition:.4s ease;
+
+}
+
+
+
+.modal-overlay.active .modal{
+transform:scale(1);
+}
+
+
+
+.close-modal{
+
+position:absolute;
+
+top:18px;
+right:22px;
+
+background:none;
+border:none;
+
+font-size:35px;
+
+font-family:serif;
+
+color:#B2935B;
+
+cursor:pointer;
+
+}
+
+
+
+.modal h2{
+
+text-align:center;
+
+font-size:35px;
+
+font-weight:400;
+
+letter-spacing:15px;
+
+color:#7c6845;
+
+margin-bottom:35px;
+
+}
+
+
+.modal h3{
+
+font-size:25px;
+
+letter-spacing:8px;
+
+text-align:center;
+
+font-weight:400;
+
+color:#B2935B;
+
+margin:35px 0 20px;
+
+}
+
+
+
+.menu-row{
+
+display:flex;
+
+justify-content:space-between;
+
+font-size:23px;
+
+line-height:1.55;
+
+}
+
+
+
+.modal p{
+font-size:20px;
+line-height:1.6;
+}
+
+
+
+.modal input{
+
+width:100%;
+
+margin-top:25px;
+
+padding:18px;
+
+border:1px solid #d8c7a4;
+
+background:transparent;
+
+font-family:inherit;
+
+font-size:20px;
+
+}
+
+
+.modal button.join{
+
+margin-top:20px;
+
+width:100%;
+
+padding:16px;
+
+background:#B2935B;
+
+color:white;
+
+border:none;
+
+font-family:inherit;
+
+font-size:18px;
+
+letter-spacing:3px;
+
+}
+
