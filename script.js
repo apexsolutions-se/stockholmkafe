@@ -1,54 +1,100 @@
 const draggableItems = document.querySelectorAll(".draggable");
 
-draggableItems.forEach((item) => {
-  let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
-  let rotation = "";
+let highestZ = 100;
 
-  item.addEventListener("pointerdown", (e) => {
+const CLICK_MOVE_LIMIT = 6;
+const mobileQuery = window.matchMedia("(max-width: 650px)");
+
+const originalPositions = new Map();
+
+draggableItems.forEach(item => {
+  originalPositions.set(item, {
+    left: item.style.left,
+    top: item.style.top,
+    zIndex: window.getComputedStyle(item).zIndex
+  });
+});
+
+function isMobileLayout() {
+  return mobileQuery.matches;
+}
+
+draggableItems.forEach(item => {
+  let dragging = false;
+  let hasMoved = false;
+
+  let startX;
+  let startY;
+
+  let pointerStartX;
+  let pointerStartY;
+
+  item.addEventListener("pointerdown", e => {
     e.preventDefault();
 
-    isDragging = true;
+    hasMoved = false;
+
+    pointerStartX = e.clientX;
+    pointerStartY = e.clientY;
+
+    if (isMobileLayout()) {
+      return;
+    }
+
+    dragging = true;
 
     const rect = item.getBoundingClientRect();
 
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+    startX = e.clientX - rect.left;
+    startY = e.clientY - rect.top;
 
-    rotation = getComputedStyle(item).transform;
+    highestZ++;
+    item.style.zIndex = highestZ;
 
-    item.style.left = `${rect.left}px`;
-    item.style.top = `${rect.top}px`;
-
+    item.classList.add("is-dragging");
     item.setPointerCapture(e.pointerId);
-    item.style.zIndex = "9999";
   });
 
-  item.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
+  item.addEventListener("pointermove", e => {
+    if (isMobileLayout()) return;
+    if (!dragging) return;
 
-    const x = e.clientX - offsetX;
-    const y = e.clientY - offsetY;
+    const moveX = Math.abs(e.clientX - pointerStartX);
+    const moveY = Math.abs(e.clientY - pointerStartY);
 
-    item.style.left = `${x}px`;
-    item.style.top = `${y}px`;
-    item.style.transform = rotation;
+    if (moveX > CLICK_MOVE_LIMIT || moveY > CLICK_MOVE_LIMIT) {
+      hasMoved = true;
+    }
+
+    const scene = document
+      .querySelector(".kaffe-scene")
+      .getBoundingClientRect();
+
+    const x = e.clientX - scene.left - startX;
+    const y = e.clientY - scene.top - startY;
+
+    item.style.left = x + "px";
+    item.style.top = y + "px";
   });
 
-  item.addEventListener("pointerup", (e) => {
-    isDragging = false;
-    item.releasePointerCapture(e.pointerId);
-  });
+  item.addEventListener("pointerup", e => {
+    if (!isMobileLayout() && dragging) {
+      dragging = false;
+      item.classList.remove("is-dragging");
 
-  item.addEventListener("pointercancel", () => {
-    isDragging = false;
+      if (item.hasPointerCapture(e.pointerId)) {
+        item.releasePointerCapture(e.pointerId);
+      }
+    }
+
+    if (!hasMoved && item.classList.contains("modal-trigger")) {
+      openModal(item.dataset.modal);
+    }
   });
 });
 
 const modalData = {
-
-menu: `
+  menu: `
 
 <h2>MENU</h2>
 
@@ -114,7 +160,7 @@ LOKALA LEVERANTÖRER
 
 `,
 
-contact:`
+  contact: `
 
 <h2>HITTA OSS</h2>
 
@@ -133,8 +179,7 @@ contact:`
 
 `,
 
-
-mail:`
+  mail: `
 
 <h2>HÅLL KONTAKT</h2>
 
@@ -150,53 +195,147 @@ GÅ MED
 
 `,
 
+  news: `
 
-news:`
+<div class="newspaper-modal">
+
+<p class="paper-kicker">STOCKHOLM KAFÉ JOURNAL</p>
 
 <h2>DAGENS NYHETER</h2>
 
-<p>
+<p class="paper-date">FIKA · KAFFE · LOKALA SMAKER</p>
 
-☕ FIKA DEAL<br><br>
+<div class="paper-divider"></div>
 
-Köp valfri kaffe och få en nybakad kanelbulle för endast 25 kr.
+<div class="paper-lead">
+  <h3>NYBAKAT IDAG</h3>
+  <p>
+    Våra kanelbullar bakas färska varje morgon med kardemumma,
+    smör och långsam jäsning för en mjukare, rikare smak.
+  </p>
+</div>
 
-<br><br>
+<div class="paper-columns">
 
-Gäller hela veckan.
+  <div>
+    <h3>VECKANS BÖNA</h3>
+    <p>
+      En rund och mjuk mellanrost med toner av choklad,
+      nötter och torkad frukt. Rostad i små omgångar här i Sverige.
+    </p>
+  </div>
 
+  <div>
+    <h3>FIKA DEAL</h3>
+    <p>
+      Köp valfri kaffe och få en nybakad kanelbulle för endast 25 kr.
+      Gäller hela veckan.
+    </p>
+  </div>
+
+</div>
+
+<div class="paper-divider"></div>
+
+<p class="paper-footer">
+  TACK FÖR ATT DU STÖDJER LOKALA BAGARE, ROSTARE OCH LEVERANTÖRER.
 </p>
 
+</div>
+
+`,
+
+  about: `
+
+<h2>VÅR HISTORIA</h2>
+
+<p class="about-intro">
+En liten plats för långsamma morgnar,
+varma samtal och riktigt gott kaffe.
+</p>
+
+<div class="about-section">
+
+<h3>KAFFET</h3>
+
+<p>
+På Stockholm Kafé väljer vi våra bönor med omsorg.
+Vårt kaffe är etiskt framtaget från odlare runt om i världen
+och rostas i små omgångar här i Sverige.
+</p>
+
+<h3>LOKALA RÖTTER</h3>
+
+<p>
+Vi tror på att stötta människorna nära oss.
+Därför samarbetar vi med lokala bagerier och leverantörer
+för att servera färska råvaror efter säsong.
+</p>
+
+<h3>VÅR FILOSOFI</h3>
+
+<p>
+Inspirerade av svensk fika skapar vi en plats där kvalitet,
+hållbarhet och gemenskap får ta tid.
+</p>
+
+</div>
+
+<p class="menu-thank-you">
+BRYGGT MED OMTANKE<br>
+I STOCKHOLM
+</p>
 
 `
-
 };
 
+const overlay = document.querySelector(".modal-overlay");
+const modal = document.querySelector(".modal");
+const modalContent = document.querySelector(".modal-content");
+const closeModal = document.querySelector(".close-modal");
 
+function openModal(modalType) {
+  if (!modalData[modalType]) return;
 
-const overlay =
-document.querySelector(".modal-overlay");
+  modalContent.innerHTML = modalData[modalType];
 
-const modalContent =
-document.querySelector(".modal-content");
+  modal.classList.remove("has-scroll-hint", "hide-scroll-hint");
 
+  if (modalType === "menu") {
+    modal.classList.add("has-scroll-hint");
+  }
 
+  overlay.classList.add("active");
 
-document.querySelectorAll(".modal-trigger")
-.forEach(item=>{
+  modalContent.scrollTop = 0;
+}
 
-item.addEventListener("dblclick",()=>{
+function closeActiveModal() {
+  overlay.classList.remove("active");
+}
 
-modalContent.innerHTML =
-modalData[item.dataset.modal];
+closeModal.addEventListener("click", closeActiveModal);
 
-overlay.classList.add("active");
-
+overlay.addEventListener("click", e => {
+  if (e.target === overlay) {
+    closeActiveModal();
+  }
 });
 
-
+modalContent.addEventListener("scroll", () => {
+  if (
+    modal.classList.contains("has-scroll-hint") &&
+    modalContent.scrollTop > 10
+  ) {
+    modal.classList.add("hide-scroll-hint");
+  }
 });
 
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeActiveModal();
+  }
+});
 
 
 document.querySelector(".close-modal")
@@ -216,3 +355,31 @@ overlay.classList.remove("active");
 }
 
 }
+
+modalContent.addEventListener("scroll", () => {
+  const modal = document.querySelector(".modal");
+
+  if (modal.classList.contains("has-scroll-hint") && modalContent.scrollTop > 10) {
+    modal.classList.add("hide-scroll-hint");
+  }
+});
+
+const resetButton = document.querySelector(".reset-table");
+
+resetButton.addEventListener("click", () => {
+  draggableItems.forEach(item => {
+    item.classList.add("resetting");
+
+    const original = originalPositions.get(item);
+
+    item.style.left = original.left;
+    item.style.top = original.top;
+    item.style.zIndex = original.zIndex;
+
+    setTimeout(() => {
+      item.classList.remove("resetting");
+    }, 850);
+  });
+
+  highestZ = 100;
+});
