@@ -782,6 +782,8 @@ body {
 
 /* KEEP ALL YOUR CURRENT CSS, but replace your current mobile @media block with this */
 
+/* KEEP ALL YOUR CURRENT CSS, but replace your current mobile @media block with this */
+
 @media (max-width: 650px) {
   :root {
     --brand-top: 5%;
