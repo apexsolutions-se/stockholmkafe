@@ -100,8 +100,12 @@ body {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  z-index: 5;
-  pointer-events: none;
+
+  z-index: 1000;
+
+  pointer-events: auto;
+  cursor: pointer;
+
   animation: brandEnter 1s ease forwards;
 }
 
@@ -313,45 +317,53 @@ body {
     --brand-logo-width: 80px;
     --brand-letter-spacing: 8px;
 
-    --guest-check-left: 7%;
+    --guest-check-left: 10%;
     --guest-check-top: 32%;
-    --guest-check-width: 30%;
+    --guest-check-width: 25%;
 
     --menu-left: 32%;
-    --menu-top: 29%;
+    --menu-top: 25%;
     --menu-width: 42%;
 
     --calling-card-left: 66%;
-    --calling-card-top: 30%;
-    --calling-card-width: 22%;
+    --calling-card-top: 27%;
+    --calling-card-width: 20%;
 
-    --postcard-left: 55%;
-    --postcard-top: 50%;
-    --postcard-width: 34%;
+    --postcard-left: 65%;
+    --postcard-top: 37%;
+    --postcard-width: 25%;
 
-    --newspaper-left: 7%;
-    --newspaper-top: 67%;
-    --newspaper-width: 42%;
+    --newspaper-left: 15%;
+    --newspaper-top: 68%;
+    --newspaper-width: 38%;
 
-    --coffee-left: 26%;
-    --coffee-top: 52%;
+    --coffee-left: 23%;
+    --coffee-top: 56%;
     --coffee-width: 17%;
 
-    --sugar-one-left: 37%;
-    --sugar-one-top: 50%;
+    --sugar-one-left: 38%;
+    --sugar-one-top: 55%;
     --sugar-one-width: 9%;
 
-    --sugar-two-left: 38%;
-    --sugar-two-top: 54%;
+    --sugar-two-left: 39%;
+    --sugar-two-top: 57%;
     --sugar-two-width: 9%;
 
     --flower-left: 48%;
-    --flower-top: 68%;
+    --flower-top: 60%;
     --flower-width: 32%;
 
     --napkin-left: 63%;
-    --napkin-top: 78%;
+    --napkin-top: 65%;
     --napkin-width: 18%;
+  }
+
+  .menu {
+    z-index: 2;
+  }
+
+  .napkin {
+    z-index: 1;
   }
 }
 
@@ -779,8 +791,6 @@ body {
 
   color: #B2935B !important;
 }
-
-/* KEEP ALL YOUR CURRENT CSS, but replace your current mobile @media block with this */
 
 /* KEEP ALL YOUR CURRENT CSS, but replace your current mobile @media block with this */
 
